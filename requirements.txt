@@ -1,0 +1,11 @@
+pycryptodome>=3.4.7
+pysha3>=1.0.1
+graphviz
+numpy
+torch
+tqdm
+sklearn
+persistent
+rlp==1.0.1
+ethereum
+web3
