@@ -42,7 +42,7 @@ class BlockStateDep(Checker):
                     continue
 
                 try:
-                    _, value_from_block = logger.trace_log_stack(i-1, -1, set())
+                    _, value_from_block = logger.trace_log_stack(i-1, -1)
                     if value_from_block:
                         return True
                 except RecursionError:
@@ -53,14 +53,14 @@ class BlockStateDep(Checker):
                     continue
 
                 try:
-                    _, value_from_block = logger.trace_log_stack(i-1, -3, set())
+                    _, value_from_block = logger.trace_log_stack(i-1, -3)
                     if value_from_block:
                         return True
                 except RecursionError:
                     continue
             elif log.op == JUMPI:
                 try:
-                    _, value_from_block = logger.trace_log_stack(i-1, -2, set())
+                    _, value_from_block = logger.trace_log_stack(i-1, -2)
                     if value_from_block:
                         return True
                 except RecursionError:

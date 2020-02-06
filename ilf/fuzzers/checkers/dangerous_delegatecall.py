@@ -26,12 +26,12 @@ class DangerousDelegatecall(Checker):
                 value_from_call0 = False
                 if args_length != 0 and int.from_bytes(bytes.fromhex(log.memory[2:])[args_offset:args_offset+args_length], byteorder='big') != 0:
                     try:
-                        value_from_call0, _ = logger.trace_log_memory(i-1, args_offset, args_offset + args_length, set())
+                        value_from_call0, _ = logger.trace_log_memory(i-1, args_offset, args_offset + args_length)
                     except RecursionError:
                         pass
 
                 try:
-                    value_from_call1, _ = logger.trace_log_stack(i-1, -2, set())
+                    value_from_call1, _ = logger.trace_log_stack(i-1, -2)
                 except RecursionError:
                     value_from_call1 = False
 
