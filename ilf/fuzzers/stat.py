@@ -38,7 +38,8 @@ class Stat:
             Leaking(),
             Locking(contract_manager, account_manager),
             Suicidal(contract_manager, account_manager),
-            UnhandledException()
+            UnhandledException(),
+            Reentrancy(contract_manager, account_manager)
         ]
 
 
