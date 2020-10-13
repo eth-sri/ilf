@@ -15,7 +15,7 @@ class Reentrancy(Checker):
         pc1, pc2 = -1, -1
         
         for log in logger.logs:
-            if log.op == CALL and int(log.stack[-3], 16) > 0:  # CALL: [gas  addr  value  argsOffset  argsLength  retOffset  retLength]
+            if log.op == CALL and int(log.stack[-3], 16) > 0 and int(log.stack[-1], 16) > 0 :  # CALL: [gas  addr  value  argsOffset  argsLength  retOffset  retLength]
                 has_transfer = True
                 pc1 = log.pc
             if log.op == SSTORE :
