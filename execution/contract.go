@@ -5,6 +5,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
+	"os"
+	"os/exec"
+	"strconv"
 	"strings"
 
 	"github.com/ethereum/go-ethereum/accounts/abi"
@@ -13,7 +16,41 @@ import (
 	"github.com/ethereum/go-ethereum/core/vm"
 )
 
-var bzzr0 = fmt.Sprintf("%x", append([]byte{0xa1, 0x65}, []byte("bzzr0")...))
+func getSolcVersion() int {
+	out, _ := exec.Command("solc", "--version").Output()
+	out_s := string(out)
+	idx := strings.Index(out_s, "Version: 0.")
+	if idx == -1 {
+		return 4
+	}
+	out_s = out_s[idx+len("Version: 0."):]
+	idx = strings.Index(out_s, ".")
+	if idx == -1 {
+		return 4
+	}
+	out_s = out_s[:idx]
+	out_int, err := strconv.Atoi(out_s)
+	if err != nil {
+		return 4
+	}
+	return out_int
+}
+
+func getBzzr() string {
+	bzzr := ""
+	solcVersion := getSolcVersion()
+	if solcVersion <= 4 {
+		bzzr = fmt.Sprintf("%x", append(append([]byte{0xa1, 0x65}, []byte("bzzr0")...), []byte{0x58, 0x20}...))
+	} else if solcVersion == 5 {
+		bzzr = fmt.Sprintf("%x", append(append([]byte{0xa2, 0x65}, []byte("bzzr1")...), []byte{0x58, 0x20}...))
+	} else {
+		fmt.Fprintln(os.Stderr, "Warning: be carefule! ILF was not tested on solc version >= 0.6!")
+		bzzr = fmt.Sprintf("%x", append(append([]byte{0xa2, 0x64}, []byte("ipfs")...), []byte{0x58, 0x22}...))
+	}
+	return bzzr
+}
+
+var bzzr0 = getBzzr()
 
 type Contract struct {
 	Name      string           `json:"name"`
