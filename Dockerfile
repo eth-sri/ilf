@@ -56,7 +56,9 @@ RUN git apply /go/src/ilf/script/patch.geth
 
 WORKDIR /go/src/ilf
 # install python dependencies
+RUN apt-get -y install autoconf libjpeg-dev zlib1g-dev
 RUN pip3 install -r requirements.txt --no-cache-dir
+RUN pip3 install torch==1.10.2+cpu torchvision==0.11.3+cpu torchaudio==0.10.2+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 RUN go build -o execution.so -buildmode=c-shared export/execution.go
 
 ENTRYPOINT [ "/bin/bash" ]
