@@ -57,8 +57,17 @@ RUN git apply /go/src/ilf/script/patch.geth
 WORKDIR /go/src/ilf
 # install python dependencies
 RUN apt-get -y install autoconf libjpeg-dev zlib1g-dev
+RUN pip3 install cython --no-cache-dir
+RUN pip3 install cytoolz --no-cache-dir
 RUN pip3 install -r requirements.txt --no-cache-dir
 RUN pip3 install torch==1.10.2+cpu torchvision==0.11.3+cpu torchaudio==0.10.2+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
 RUN go build -o execution.so -buildmode=c-shared export/execution.go
+
+# install pyethereum
+WORKDIR /
+RUN git clone https://github.com/ethereum/pyethereum.git
+WORKDIR /pyethereum
+RUN git checkout v2.3.2
+RUN python3 setup.py install
 
 ENTRYPOINT [ "/bin/bash" ]
