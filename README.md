@@ -16,7 +16,7 @@ $ docker build -t ilf .
 $ docker run -it ilf
 ```
 
-You can also follow the instructions in the Dockerfile to install ILF locally.
+You can also follow the instructions in the Dockerfile to install ILF locally. If you experience build errors on Apple M chips, please refer to [#21](https://github.com/eth-sri/ilf/issues/21).
 
 ## Usage
 
