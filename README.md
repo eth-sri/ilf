@@ -10,85 +10,13 @@ ILF is developed at [SRI Lab, Department of Computer Science, ETH Zurich](https:
 
 ## Setup
 
-### Docker
 We provide a docker file, which we recommend to start with. To build and run:
 ```
 $ docker build -t ilf .
 $ docker run -it ilf
 ```
 
-### Manually
-
-We provide the procedures for local setup (tested on [Ubuntu 18.04](http://releases.ubuntu.com/18.04/)).
-
-Install [golang](https://golang.org/), for example:
-```
-$ wget https://dl.google.com/go/go1.10.4.linux-amd64.tar.gz
-$ tar -xvf go1.10.4.linux-amd64.tar.gz
-$ sudo mv go /usr/lib/go-1.10
-$ echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-$ echo 'export GOROOT=/usr/lib/go-1.10' >> ~/.bashrc
-$ echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
-$ echo 'export PATH=$PATH:$GOROOT/bin' >> ~/.bashrc
-$ source ~/.bashrc
-```
-
-Install [z3](https://github.com/Z3Prover/z3):
-```
-$ git clone https://github.com/Z3Prover/z3.git
-$ cd z3
-$ git checkout z3-4.8.6
-$ python3 scripts/mk_make.py --python
-$ cd build
-$ make -j7
-$ sudo make install
-```
-
-Clone this repo:
-```
-$ mkdir -p $GOPATH/src
-$ cd $GOPATH/src
-$ git clone https://github.com/eth-sri/ilf.git
-```
-
-Clone [go-ethereum](https://geth.ethereum.org/) and apply our patch:
-```
-$ mkdir -p $GOPATH/src/github.com/ethereum
-$ cd $GOPATH/src/github.com/ethereum
-$ git clone https://github.com/ethereum/go-ethereum.git
-$ cd go-ethereum
-$ git checkout 86be91b3e2dff5df28ee53c59df1ecfe9f97e007
-$ git apply $GOPATH/src/ilf/script/patch.geth
-```
-
-Install python dependencies:
-```
-$ cd $GOPATH/src/ilf
-$ pip3 install -r requirements.txt
-```
-
-Install execution backend:
-```
-$ go build -o execution.so -buildmode=c-shared export/execution.go
-```
-
-The following steps are necessary only when you want to use ILF to fuzz new contracts other than our example. Install [nodejs](https://nodejs.org/en/), [Truffle](https://www.trufflesuite.com/truffle), [web3.js](https://web3js.readthedocs.io/en/v1.2.4/) and [Ganache-CLI](https://github.com/trufflesuite/ganache-cli):
-```
-$ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-$ sudo apt-get install nodejs
-$ mkdir ~/.npm-global
-$ npm config set prefix '~/.npm-global'
-$ echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
-$ source ~/.bashrc
-$ npm install -g truffle web3 ganache-cli
-```
-
-Install [solc](https://github.com/ethereum/solidity) 0.4.25:
-```
-$ wget https://github.com/ethereum/solidity/releases/download/v0.4.25/solc-static-linux
-$ chmod +x solc-static-linux
-$ sudo mv solc-static-linux /usr/bin/solc
-```
+You can also follow the instructions in the Dockerfile to install ILF locally.
 
 ## Usage
 
@@ -110,6 +38,10 @@ $ rm example/crowdsale/transactions.json
 $ python3 script/extract.py --proj example/crowdsale/ --port 8545
 ```
 Note that you need to kill existing `ganache-cli` processes listening the same port before calling this script.
+
+### Automatically Constructing Truffle Projects
+
+For evaluation purposes, one would need to automatically construct Truffle projects from a large set of contracts. To achieve this, one can write a script to automatically produce files required by Truffle projects, following the format in `example/crowdsale`. The compressed file `truffle_scripts.tar.gz` contains the scripts we used. Those scripts might not run directly but can give you a high level idea how things work.
 
 ### Training
 
