@@ -39,10 +39,6 @@ $ python3 script/extract.py --proj example/crowdsale/ --port 8545
 ```
 Note that you need to kill existing `ganache-cli` processes listening the same port before calling this script.
 
-### Automatically Constructing Truffle Projects
-
-For evaluation purposes, one would need to automatically construct Truffle projects from a large set of contracts. To achieve this, one can write a script to automatically produce files required by Truffle projects, following the format in `example/crowdsale`. The compressed file `truffle_scripts.tar.gz` contains the scripts we used. Those scripts might not run directly but can give you a high level idea how things work.
-
 ### Training
 
 For training, one needs to run `symbolic` on a set of training contracts to produce a dataset in a training directory. Usually tens of thousands of contracts are used for training. For demonstration purposes, we show how to produce a small training dataset from our example contract to the `train_data` directory:
@@ -62,6 +58,10 @@ Then the following command performs neural network training and outputs the trai
 $ mkdir new_model
 $ python3 -m ilf --fuzzer imitation --train_dir ./train_data --model ./new_model
 ```
+
+### Automatically Constructing Truffle Projects
+
+For evaluation and training purposes, one might want to automatically construct Truffle projects from a large set of contracts. To achieve this, one can write a script to automatically produce files required by Truffle projects, following the format in `example/crowdsale`. The compressed file `truffle_scripts.tar.gz` contains the scripts we used. Those scripts might not run directly but can give you a high level idea how things work.
 
 ## Citing ILF
 ```
